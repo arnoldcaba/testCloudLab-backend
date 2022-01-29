@@ -33,7 +33,7 @@ const usuariosPost = async(req, res = response) => {
         }
     
         // verificar si ya existe el usuario
-        const existeUsuario = await Usuario.findOne({ usuario });
+        const existeUsuario = await Usuario.findOne({ usuario: usuario.toUpperCase() });
         if (existeUsuario) {
             return res.status(400).json({
                 code: 2,
