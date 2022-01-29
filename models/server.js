@@ -47,9 +47,9 @@ class Server {
         this.app.use( this.authPath, require('../routes/auth'));
 
         // manejo de rutas de app frontend
-        this.app.get('*', (req, res) => {
+        /* this.app.get('*', (req, res) => {
             res.sendFile(path.resolve(__dirname, '../public/index.html'));
-        });
+        }); */
     }
 
     listen() {
