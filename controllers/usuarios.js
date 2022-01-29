@@ -9,7 +9,8 @@ const usuariosGet = async(req = request, res = response) => {
         const usuarios = await Usuario.find().limit(Number(limit)).skip(Number(page - 1));
     
         res.status(200).json({
-            usuarios
+            usuarios,
+            page
         });
     } catch (error) {
         console.log(error);
@@ -26,6 +27,7 @@ const usuariosPost = async(req, res = response) => {
         const existeCorreo = await Usuario.findOne({ correo });
         if (existeCorreo) {
             return res.status(400).json({
+                code: 1,
                 message: 'El correo ya esta registrado'
             });
         }
@@ -34,6 +36,7 @@ const usuariosPost = async(req, res = response) => {
         const existeUsuario = await Usuario.findOne({ usuario });
         if (existeUsuario) {
             return res.status(400).json({
+                code: 2,
                 message: 'El usuario ya existe!'
             });
         }
@@ -44,9 +47,7 @@ const usuariosPost = async(req, res = response) => {
         const user = new Usuario({ usuario, nombre, apellido, correo, _id });
         await user.save();
     
-        res.status(201).json({
-            user
-        });
+        res.status(201).json(user);
         
     } catch (error) {
         console.log(error);
@@ -83,7 +84,7 @@ const usuariosDelete = async(req, res = response) => {
         }
         console.log(usuario);
         res.status(200).json({
-            msg: 'delete API - usuariosDelete'
+            msg: 'Usuario eliminado'
         });
     } catch (error) {
         console.log(error);

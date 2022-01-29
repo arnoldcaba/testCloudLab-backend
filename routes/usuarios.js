@@ -9,16 +9,18 @@ const { usuariosGet,
         usuariosGetById,
         usuariosPatch, } = require('../controllers/usuarios');
 const { validarCampos } = require('../middlewares/validarcampos');
+const { validarJWT } = require('../middlewares/validarToken');
 
 const router = Router();
 
 
-router.get('/', usuariosGet );
-router.get('/:id', usuariosGetById );
+router.get('/', validarJWT, usuariosGet );
+router.get('/:id', validarJWT, usuariosGetById );
 
-router.put('/:id', usuariosPut );
+router.put('/:id', validarJWT, usuariosPut );
 
 router.post('/', [
+    validarJWT,
     check('correo', 'Correo no cumple formato').isEmail(),
     check('usuario', 'Usuario es requerido').not().isEmpty(),
     check('nombre', 'Nombre es requerido').not().isEmpty(),
@@ -26,9 +28,9 @@ router.post('/', [
     validarCampos
 ], usuariosPost );
 
-router.delete('/:id', usuariosDelete );
+router.delete('/:id',validarJWT, usuariosDelete );
 
-router.patch('/', usuariosPatch );
+router.patch('/', validarJWT, usuariosPatch );
 
 
 
