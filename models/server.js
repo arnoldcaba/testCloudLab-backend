@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dbConnection = require('../database/config');
 const { validarCampos } = require('../middlewares/validarcampos');
+const { sendFile } = require('express/lib/response');
 
 class Server {
 
@@ -44,6 +45,11 @@ class Server {
     routes() {
         this.app.use( this.usuariosPath, require('../routes/usuarios'));
         this.app.use( this.authPath, require('../routes/auth'));
+
+        // manejo de rutas de app frontend
+        this.app.get('*', (req, res) => {
+            res.sendFile(path.resolve(__dirname, '../public/index.html'));
+        });
     }
 
     listen() {
